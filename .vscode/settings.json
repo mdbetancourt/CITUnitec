@@ -1,5 +1,14 @@
 {
     "licenser.license": "MIT",
     "licenser.author": "Michel Betancourt",
-    "licenser.projectName": "CITU"
+    "licenser.projectName": "CITU",
+    "python.unitTest.unittestArgs": [
+        "-v",
+        "-s",
+        "./tests",
+        "-p",
+        "*_tests.py"
+    ],
+    "python.unitTest.unittestEnabled": true,
+    "python.pythonPath": "/home/akhail/.local/share/virtualenvs/citu-TMYVi38l/bin/python3"
 }

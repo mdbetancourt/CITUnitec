@@ -4,3 +4,9 @@ python-telegram-bot = "*"
 "bs4" = "*"
 robobrowser = "*"
 "html5lib" = "*"
+peewee = "*"
+
+
+[dev-packages]
+
+pylint = "*"
