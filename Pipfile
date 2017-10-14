@@ -1,0 +1,6 @@
+[packages]
+
+python-telegram-bot = "*"
+"bs4" = "*"
+robobrowser = "*"
+"html5lib" = "*"
