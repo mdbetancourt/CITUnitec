@@ -1,17 +1,21 @@
 # Copyright (c) 2017 akhail
-# 
+#
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
+"""Base Model.
+
+"""
+
 import os
-from peewee import Model, PostgresqlDatabase
+from peewee import Model
+from playhouse.db_url import connect
 
-PATH = os.path.join(os.path.expanduser("~"), 'database.db')
-DATABASE_URL = os.environ.get('DATABASE_URL') or PATH
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-DATABASE = PostgresqlDatabase(DATABASE_URL)
+DATABASE = connect(DATABASE_URL)
 
 class BaseModel(Model):
     """BaseModel. """
-    class Meta:
+    class Meta: # pylint: disable=R0903
         """Meta class. """
         database = DATABASE
