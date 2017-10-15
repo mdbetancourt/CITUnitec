@@ -1,15 +1,19 @@
 language: python
 
+env:
+  global:
+    - PYTHONPATH=.
+
 python:
-  - "3.2"
   - "3.3"
   - "3.4"
   - "3.5"
   - "3.6"
 
 install:
-  - "pip install -e . --upgrade"
-  - "pipenv install"
+  - "pip install pipenv"
+  - "pipenv install --dev"
+
 
 script:
-  - "pytest"
+  - "pipenv run -- py.test tests -s -v"
