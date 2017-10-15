@@ -1,1 +1,1 @@
-web: pipenv run python src/citu.py
+web: pipenv run python citu/main.py
