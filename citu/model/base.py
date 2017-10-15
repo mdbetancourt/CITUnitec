@@ -5,14 +5,19 @@
 """Base Model.
 
 """
-
 import os
-from peewee import Model
+from os.path import join, expanduser
+
+from peewee import Model, SqliteDatabase
 from playhouse.db_url import connect
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = os.environ.get('DATABASE_URL') or join(expanduser("~"), '.bot_database.db')
+HEROKU = os.environ.get('HEROKU')
 
-DATABASE = connect(DATABASE_URL)
+if HEROKU is not None:
+    DATABASE = connect(DATABASE_URL)
+else:
+    DATABASE = SqliteDatabase(DATABASE_URL)
 
 class BaseModel(Model):
     """BaseModel. """

@@ -6,6 +6,7 @@
 import logging
 from functools import wraps
 
+from citu.api import Login
 from citu.model import Student
 
 def require_login(func):
@@ -18,7 +19,7 @@ def require_login(func):
         try:
             student = Student.get(Student.username == user)
             logger.info(f"The user {Student.username} login.")
-            func(student, bot, update)
+            func(Login(student), bot, update)
         except Student.DoesNotExist:
             update.message.reply_text("Inicia sesión para usar esta funcion.")
 

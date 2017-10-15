@@ -11,3 +11,4 @@ peewee = "*"
 [dev-packages]
 
 pylint = "*"
+pytest = "*"

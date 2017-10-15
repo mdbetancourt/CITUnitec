@@ -32,9 +32,9 @@ class HandlerLogout(CommandHandler):
 
     @staticmethod
     @require_login
-    def logout(student, _, update):
+    def logout(login, _, update):
         """Logout. """
-        student.delete_instance()
+        login.student.delete_instance()
         update.message.reply_text("Cerraste sesión")
 
 
@@ -87,13 +87,15 @@ class ConversationLogin(ConversationHandler):
         username = update.message.from_user.username
 
         self._password = update.message.text
-        if Login(self._user, self._password).state == Login.SUCCESS:
+
+        student = Student(username=username,
+                          identity=self._user,
+                          password=self._password)
+
+        if Login(student).state == Login.SUCCESS:
             send("Has sido registrado sastifactoriamente.")
             self._logger.info(f"{username} registered successfuly")
-
-            Student(username=username,
-                    identity=self._user,
-                    password=self._password).save()
+            student.save()
 
             return ConversationHandler.END
         else:
