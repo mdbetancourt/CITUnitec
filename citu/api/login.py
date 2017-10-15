@@ -9,6 +9,8 @@ class Login(object):
     """Login in web.
 
     """
+    INTRANET = 'http://www.unitec.edu.ve/'
+    CODES = INTRANET + 'inscripcion.jsp?jspContenido=codigopreinscripcion/vercodigo.jsp'
     WEB_PAGE = 'http://portal.unitec.edu.ve/'
     SUCCESS, ERROR_PASSWORD, ERROR_LOGIN = 0, -3, -2
 
@@ -29,6 +31,19 @@ class Login(object):
             self._robo.submit_form(form)
             self._state = int(self._robo.url[50:])
             self._login = True
+
+    @property
+    def codes(self):
+        """Return codes. """
+        self.connect()
+        self._robo.open(Login.CODES)
+        codes = self._robo.find_all('table', attrs={'class':'contenido'}) # pylint: disable=E1102
+        tables = {}
+        for table in codes:
+            _cod = table.find('td', attrs={'align':'center'}).text
+            _subject = map(lambda x: x.text, table.find_all('li'))
+            tables[_cod] = list(_subject)
+        return tables
 
     @property
     def state(self):

@@ -7,8 +7,10 @@
 """
 
 from .login import ConversationLogin, HandlerLogout
+from .precode import PreCodeSubjects
 
 HANDLERS = [
     ConversationLogin(),
-    HandlerLogout()
+    HandlerLogout(),
+    PreCodeSubjects()
 ]
