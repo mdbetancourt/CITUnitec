@@ -5,6 +5,7 @@ python-telegram-bot = "*"
 robobrowser = "*"
 "html5lib" = "*"
 peewee = "*"
+"psycopg2" = "*"
 
 
 [dev-packages]
