@@ -13,5 +13,5 @@ try:
     DATABASE.create_tables([
         Student
     ])
-except peewee.OperationalError:
+except (peewee.ProgrammingError, peewee.OperationalError):
     pass
