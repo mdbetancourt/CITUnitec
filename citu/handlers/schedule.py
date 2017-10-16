@@ -10,6 +10,7 @@ from io import BytesIO
 
 import plotly.plotly as py
 import plotly.figure_factory as ff
+from telegram import ChatAction
 from telegram.ext import CommandHandler
 
 from citu.handlers.utils import require_login
@@ -26,6 +27,8 @@ class ScheduleHandler(CommandHandler):
     @require_login
     def schedule(login, bot, update):
         """Get schedule. """
+        chat_id = update.message.chat.id
+        bot.send_chat_action(chat_id=chat_id, action=ChatAction.UPLOAD_PHOTO)
         data = login.schedule
         colorscale = [[0, '#4d004c'], [.5, '#f2e5ff'], [1, '#ffffff']]
         table = ff.create_table(data, colorscale=colorscale)
@@ -41,4 +44,4 @@ class ScheduleHandler(CommandHandler):
         image = BytesIO(py.image.get(table, format='png', scale=4))
         image.name = 'horario.png'
         image.seek(0)
-        bot.send_photo(update.message.chat.id, photo=image)
+        bot.send_photo(chat_id, photo=image)

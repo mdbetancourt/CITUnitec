@@ -7,6 +7,7 @@
 
 """
 import logging
+from telegram import ChatAction
 from telegram.ext import CommandHandler
 from citu.handlers.utils import require_login
 
@@ -20,10 +21,11 @@ class PreCodeSubjects(CommandHandler):
 
     @staticmethod
     @require_login
-    def precode_handler(login, _, update):
+    def precode_handler(login, bot, update):
         """Handler code. """
         _logger = logging.getLogger(__name__)
         _logger.info(f"{login.student.username} get codes")
+        bot.send_chat_action(chat_id=update.message.chat.id, action=ChatAction.TYPING)
 
         items = login.codes.items()
         if items:

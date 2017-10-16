@@ -8,6 +8,7 @@
 """
 
 import logging
+from telegram import ChatAction
 from telegram.ext import (
     ConversationHandler,
     Filters,
@@ -84,6 +85,8 @@ class ConversationLogin(ConversationHandler):
     def password_handler(self, bot, update):
         """Intro password. """
         send = update.message.reply_text
+        bot.send_chat_action(chat_id=update.message.chat.id, action=ChatAction.TYPING)
+
         username = update.message.from_user.username
 
         self._password = update.message.text
