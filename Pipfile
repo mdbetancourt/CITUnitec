@@ -6,6 +6,8 @@ robobrowser = "*"
 "html5lib" = "*"
 peewee = "*"
 "psycopg2" = "*"
+plotly = "*"
+numpy = "*"
 
 
 [dev-packages]

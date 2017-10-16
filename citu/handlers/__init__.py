@@ -8,9 +8,11 @@
 
 from .login import ConversationLogin, HandlerLogout
 from .precode import PreCodeSubjects
+from .schedule import ScheduleHandler
 
 HANDLERS = [
     ConversationLogin(),
     HandlerLogout(),
-    PreCodeSubjects()
+    PreCodeSubjects(),
+    ScheduleHandler()
 ]

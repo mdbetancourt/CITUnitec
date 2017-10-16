@@ -62,7 +62,7 @@ class ConversationLogin(ConversationHandler):
 
         try:
             Student.get(Student.username == username)
-            send(f"@{username} ya has iniciado sesión.")
+            send(f"Ya has iniciado sesión.")
         except Student.DoesNotExist:
             if chat_type == "private":
                 send("Introduce tus datos de la unitec. "
