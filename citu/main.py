@@ -11,7 +11,7 @@
 import os
 import sys
 import logging
-
+import plotly
 from telegram.ext import Updater
 
 sys.path.append(".")
@@ -19,6 +19,7 @@ sys.path.append(".")
 from citu.handlers import HANDLERS # pylint: disable=C0413
 
 TOKEN = os.environ.get('TELEGRAM_TOKEN')
+PLOTLY_USER, PLOTLY_KEY = os.environ.get('PLOTLY_CREDENTIAL').split(":")
 PORT = int(os.environ.get('PORT', '5000'))
 ENV = os.environ.get('HEROKU', None)
 
@@ -32,7 +33,7 @@ def error(_, update, err):
 def main():
     """Main app. """
     updater = Updater(TOKEN)
-
+    plotly.tools.set_credentials_file(username=PLOTLY_USER, api_key=PLOTLY_KEY)
     dispatcher = updater.dispatcher
 
     for handler in HANDLERS:
