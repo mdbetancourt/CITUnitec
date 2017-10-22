@@ -4,12 +4,14 @@
 # https://opensource.org/licenses/MIT
 
 import os
+
 import pytest
 
 from citu.api import Login
 from citu.model import Student
 
 USER, PASSWORD = os.environ.get("SAMPLE_LOGIN").split(":")
+
 
 @pytest.mark.parametrize("user,password,code", [
     (1245855, 234223, Login.ERROR_LOGIN),

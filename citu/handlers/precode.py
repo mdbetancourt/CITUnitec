@@ -7,9 +7,12 @@
 
 """
 import logging
+
 from telegram import ChatAction
 from telegram.ext import CommandHandler
+
 from citu.handlers.utils import require_login
+
 
 class PreCodeSubjects(CommandHandler):
     """Get pre inscription codes. """

@@ -19,8 +19,10 @@ if HEROKU is not None:
 else:
     DATABASE = SqliteDatabase(DATABASE_URL)
 
+
 class BaseModel(Model):
     """BaseModel. """
-    class Meta: # pylint: disable=R0903
+
+    class Meta:  # pylint: disable=R0903
         """Meta class. """
         database = DATABASE

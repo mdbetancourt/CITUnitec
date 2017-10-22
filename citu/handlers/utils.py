@@ -9,6 +9,7 @@ from functools import wraps
 from citu.api import Login
 from citu.model import Student
 
+
 def require_login(func):
     """Decorator require login in web. """
     logger = logging.getLogger(__name__)

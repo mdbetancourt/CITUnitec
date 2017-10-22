@@ -8,6 +8,7 @@
 """
 
 import logging
+
 from telegram import ChatAction
 from telegram.ext import (
     ConversationHandler,
@@ -18,10 +19,11 @@ from telegram.ext import (
 )
 
 from citu.api import Login
-from citu.model import Student
 from citu.handlers.utils import require_login
+from citu.model import Student
 
 USER, PASSWORD = range(2)
+
 
 class HandlerLogout(CommandHandler):
     """Logout handler. """
@@ -105,7 +107,8 @@ class ConversationLogin(ConversationHandler):
             update.message.reply_text("Los datos son incorrectos.")
             return self.cancel_handler(bot, update)
 
-    def cancel_handler(self, _, update):
+    @staticmethod
+    def cancel_handler(_, update):
         """command /cancel. """
         update.message.reply_text("Se ha cancelado el inicio de sesion\n"
                                   "/start para volver a iniciar.")

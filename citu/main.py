@@ -8,15 +8,16 @@
 
 """
 
+import logging
 import os
 import sys
-import logging
+
 import plotly
 from telegram.ext import Updater
 
 sys.path.append(".")
 
-from citu.handlers import HANDLERS # pylint: disable=C0413
+from citu.handlers import HANDLERS  # pylint: disable=C0413
 
 TOKEN = os.environ.get('TELEGRAM_TOKEN')
 PLOTLY_USER, PLOTLY_KEY = os.environ.get('PLOTLY_CREDENTIAL').split(":")
@@ -25,10 +26,12 @@ ENV = os.environ.get('HEROKU', None)
 
 logging.basicConfig(format="%(message)s", level=logging.INFO)
 
+
 def error(_, update, err):
     """Error handler function. """
     logger = logging.getLogger(__name__)
     logger.warning(f'Update "{update}" caused error "{err}"')
+
 
 def main():
     """Main app. """
@@ -49,6 +52,7 @@ def main():
     else:
         updater.start_polling()
     updater.idle()
+
 
 if __name__ == '__main__':
     main()

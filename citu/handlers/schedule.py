@@ -8,12 +8,13 @@
 """
 from io import BytesIO
 
-import plotly.plotly as py
 import plotly.figure_factory as ff
+import plotly.plotly as py
 from telegram import ChatAction
 from telegram.ext import CommandHandler
 
 from citu.handlers.utils import require_login
+
 
 class ScheduleHandler(CommandHandler):
     """Schedule handler. """

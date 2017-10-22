@@ -4,7 +4,9 @@
 # https://opensource.org/licenses/MIT
 
 from peewee import CharField
+
 from .base import BaseModel
+
 
 class Student(BaseModel):
     username = CharField(unique=True)
