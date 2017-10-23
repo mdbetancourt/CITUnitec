@@ -19,6 +19,7 @@ from telegram.ext import (
 )
 
 from citu.api import Login
+from citu.handlers.utils import cancel_handler
 from citu.handlers.utils import require_login
 from citu.model import Student
 
@@ -51,7 +52,7 @@ class ConversationLogin(ConversationHandler):
                 USER: [RegexHandler(r'^[0-9]{5,9}', self.user_handler)],
                 PASSWORD: [MessageHandler(Filters.text, self.password_handler)]
             },
-            fallbacks=[CommandHandler('cancel', self.cancel_handler)]
+            fallbacks=[CommandHandler('cancel', cancel_handler)]
         )
         self._user, self._password = None, None
         self._logger = logging.getLogger(__name__)
@@ -68,13 +69,13 @@ class ConversationLogin(ConversationHandler):
             send(f"Ya has iniciado sesión.")
         except Student.DoesNotExist:
             if chat_type == "private":
-                send("Introduce tus datos de la unitec. "
-                     "Envia /cancel para detenerte.\n"
-                     "Introduce tu cedula:")
+                send("Introduce tus datos de la UNITEC. "
+                     "Envía /cancel para detenerte.\n"
+                     "Introduce tu cédula:")
                 self._logger.info(f"The user {username} try login")
                 _next = USER
             else:
-                send("Solo puedes iniciar sesión en mensajeria privada.")
+                send("Solo puedes iniciar sesión en mensajería privada.")
 
         return _next
 
@@ -98,18 +99,11 @@ class ConversationLogin(ConversationHandler):
                           password=self._password)
 
         if Login(student).state == Login.SUCCESS:
-            send("Has sido registrado sastifactoriamente.")
-            self._logger.info(f"{username} registered successfuly")
+            send("Has sido registrado satisfactoriamente.")
+            self._logger.info(f"{username} registered successfully")
             student.save()
 
             return ConversationHandler.END
         else:
             update.message.reply_text("Los datos son incorrectos.")
-            return self.cancel_handler(bot, update)
-
-    @staticmethod
-    def cancel_handler(_, update):
-        """command /cancel. """
-        update.message.reply_text("Se ha cancelado el inicio de sesion\n"
-                                  "/start para volver a iniciar.")
-        return ConversationHandler.END
+            return cancel_handler(bot, update)

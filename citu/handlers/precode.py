@@ -24,7 +24,7 @@ class PreCodeSubjects(CommandHandler):
 
     @staticmethod
     @require_login
-    def precode_handler(login, bot, update):
+    def precode_handler(bot, update, login):
         """Handler code. """
         _logger = logging.getLogger(__name__)
         _logger.info(f"{login.student.username} get codes")
@@ -36,4 +36,4 @@ class PreCodeSubjects(CommandHandler):
                 subjects = '\n'.join(values)
                 update.message.reply_text(f"{code}:\n{subjects}")
         else:
-            update.message.reply_text("No hay codigos.")
+            update.message.reply_text("No hay códigos.")

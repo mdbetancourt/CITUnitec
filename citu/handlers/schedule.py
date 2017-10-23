@@ -26,13 +26,13 @@ class ScheduleHandler(CommandHandler):
 
     @staticmethod
     @require_login
-    def schedule(login, bot, update):
+    def schedule(bot, update, login):
         """Get schedule. """
         chat_id = update.message.chat.id
         bot.send_chat_action(chat_id=chat_id, action=ChatAction.UPLOAD_PHOTO)
         data = login.schedule
-        colorscale = [[0, '#4d004c'], [.5, '#f2e5ff'], [1, '#ffffff']]
-        table = ff.create_table(data, colorscale=colorscale)
+        color_scale = [[0, '#4d004c'], [.5, '#f2e5ff'], [1, '#ffffff']]
+        table = ff.create_table(data, colorscale=color_scale)
         table.layout.width = 230*7 + 230/2
         table.layout.height = 720
         for idx, elem in enumerate(table.layout.annotations):

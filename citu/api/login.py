@@ -15,6 +15,7 @@ class Login(object):
     INTRANET = 'http://www.unitec.edu.ve/'
     CODES = INTRANET + 'inscripcion.jsp?jspContenido=codigopreinscripcion/vercodigo.jsp'
     SCHEDULE = INTRANET + 'horario.jsp?jspContenido=horarios/horariopersonal.jsp'
+    QUALIFICATION = INTRANET + 'notasparciales.jsp?jspContenido=calificaciones/notasparciales.jsp'
 
     WEB_PAGE = 'http://portal.unitec.edu.ve/'
     SUCCESS, ERROR_PASSWORD, ERROR_LOGIN = 0, -3, -2
@@ -24,6 +25,8 @@ class Login(object):
         self.student = student
         self._robo = RoboBrowser(parser='html5lib')
         self._state = Login.ERROR_LOGIN
+        self.programs = None
+        self.periods = None
         self._login = False
 
     def connect(self):
@@ -36,6 +39,74 @@ class Login(object):
             self._robo.submit_form(form)
             self._state = int(self._robo.url[50:])
             self._login = True
+
+    def qualification_program(self):
+        self.connect()
+        self._robo.open(Login.QUALIFICATION)
+        programs = {}
+        for curr in self._robo.find('select').select('option')[1:]:
+            key = curr.attrs.get('value')
+            text = curr.text.strip()
+            programs[text] = key
+        self.programs = programs
+        return programs.keys()
+
+    def qualification_period(self, program):
+        self.connect()
+        self._robo.open(Login.QUALIFICATION)
+
+        form = self._robo.get_form()
+        form.fields['IDPFormacion'].value = program
+        self._robo.submit_form(form)
+        periods = {}
+        current = 0
+        for curr in self._robo.select('select[name=IDPeriodo] > option')[1:]:
+            key = curr.attrs.get('value')
+            text = curr.text.strip()
+            if int(key) > int(current):
+                current = key
+            periods[text] = key
+        self.periods = periods
+        return periods.keys()
+
+    def qualification(self, program, period):
+        """
+        Structure of dict
+        {
+            "subjects_1": {
+                "name_1": int,
+                "name_2": int
+            },
+            "subjects_2": {...}
+        }
+        :param program: str
+        :param period: str
+        :return: dict
+        """
+        assert isinstance(program, str)
+        assert isinstance(period, str)
+        self.connect()
+        self._robo.open(Login.QUALIFICATION)
+
+        form = self._robo.get_form()
+        form.fields['IDPFormacion'].value = self.programs[program]
+        self._robo.submit_form(form)
+        form = self._robo.get_form()
+
+        form.fields['IDPeriodo'].value = self.periods[period]
+        self._robo.submit_form(form)
+
+        subjects = {}
+        for subject in self._robo.select('tr#contenido > td > table.noborder > tbody')[1:]:
+            name = subject.select_one('span.titsubnopad > strong').text
+            name = re.sub(r'\(.+\)', '', name).strip()
+            subjects[name] = {}
+            for value in subject.select('tr')[1:]:
+                part = value.select_one('td[width=330]').text.strip().replace(u'\xa0', u' ')
+                val = value.select_one('td[width=230]').text.strip()
+                subjects[name][part] = val
+
+        return subjects
 
     @property
     def schedule(self):
