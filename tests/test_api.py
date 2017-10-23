@@ -22,3 +22,13 @@ def test_login_state(user, password, code):
     login = Login(Student(username=None, identity=user, password=password))
 
     assert login.state == code
+
+
+def test_login_qualification():
+    login = Login(Student(username='echo', identity=USER, password=PASSWORD))
+    programs = list(login.qualification_program().values())[0]
+    periods = list(login.qualification_period(programs).values())[0]
+
+    subjects = login.qualification(programs, periods)
+
+    assert isinstance(subjects, dict)
